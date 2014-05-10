@@ -1,0 +1,7 @@
+numerode mensajes
+
+15: registro duplicado
+16: error informatico
+21: registro con exito
+22: modificacion exitosa
+23: eliminaciexitosa

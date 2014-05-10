@@ -1,0 +1,28 @@
+html,body,select,input,textarea,table,label,span,div{font-family:Arial, Helvetica, sans-serif;  font-size: 11px;}
+
+body{background-image:  url('../../degradado.jpg');background-repeat:repeat-x;min-height:500px;max-height: 1000px}
+/*Maquetcion*/
+#contenedor{width:964px;height:100%;background-color:transparent;margin:20px auto;padding:2px;min-height:500px ;max-height: 1000px}
+#cabecera{width:960px;height:150px;background-color:transparent;margin:auto}
+#logo_iz{width:300px;height:150px;background-color:transparent;float:left}
+#titulo_ca{width:660px;height:150px;background-color:transparent;float:left;text-align:center}
+#menu{width:960px;height:32px;background-color:#D640C7;margin:auto}
+#cuerpo{width:960px;height:auto;background-color:#FFF;margin:5px auto;min-height:300px;}
+#pie{width:960px;height:60px;background-color:transparent;text-align:center;margin:auto}
+/*  Estilos Menu  */
+.ddsmoothmenu{background:#414141;width:990px}
+.ddsmoothmenu ul{z-index:100;list-style-type:none;float:left;margin:0;padding:0}
+.ddsmoothmenu ul li{position:relative;display:inline;float:left}
+.ddsmoothmenu ul li span{display:block;background:#414141;border-right:1px solid #778;color:#FFF;text-decoration:none;cursor:pointer;padding:9px 10px}
+* html .ddsmoothmenu ul li span{display:inline-block}
+.ddsmoothmenu ul li span:link,.ddsmoothmenu ul li a:visited{color:#FFF}
+.ddsmoothmenu ul li ul{position:absolute;left:0;display:none;visibility:hidden}
+.ddsmoothmenu ul li ul li{display:list-item;float:none}
+.ddsmoothmenu ul li ul li ul{top:0}
+.ddsmoothmenu ul li ul li span{width:150px;border-top-width:0;margin:0;padding:2px}
+* html .ddsmoothmenu{height:1%}
+.downarrowclass{position:absolute;top:12px;right:7px}
+.rightarrowclass{position:absolute;top:6px;right:5px}
+.ddshadow{position:absolute;left:0;top:0;width:0;height:0;background:silver}
+.toplevelshadow{opacity:0.8}
+.ddsmoothmenu ul li span.selected,.ddsmoothmenu ul li span:hover{background:#000;color:#FFF}
