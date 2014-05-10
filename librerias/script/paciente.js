@@ -304,7 +304,7 @@ $(document).ready(function() {
         $text_nac.prop('disabled', true);
         $text_nac.val(nacionalidad + '-');
 
-        $('#hcedula_p').val(cedula_p);
+        $('#hcedula_p').val(cedula_completa);
         $hnac.val(nacionalidad);
 
         $cedula_p.prop('disabled', true);

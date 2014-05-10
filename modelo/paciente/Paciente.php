@@ -35,8 +35,9 @@ class Paciente extends Seguridad
                 $this->_mensaje   = '<span style="color:#FF0000">La C&eacute;dula se Encuentra Registrada en el Sistema</span>';
             } else {
 
-                $fecha_nacimiento = $this->formateaBD($fecha_nacimiento);
-                
+                 $fecha_nacimiento = $this->formateaBD($fecha_nacimiento);
+                 $fecha = array('fecha_nacimiento'=>$fecha_nacimiento);
+                 $datos = array_merge($datos,$fecha);
                 $insert = $this->insert('paciente', $datos);
                 if ($insert === TRUE) {
                     $this->_cod_msg = 21;
