@@ -169,7 +169,7 @@ $img_del = _img_dt . _img_dt_del;
                                                     </ul>
                                                 </div>
                                                 <input type="hidden" id="hcod_celular" name="hcod_celular" />
-                                                <input  type="text" class="form-control input-sm" id="celular" name="celular" value="" maxlength="11" />
+                                                <input  type="text" class="form-control input-sm" id="celular" name="celular" value="" maxlength="12" />
                                             </div>
                                         </td>
                                         <td width="15">

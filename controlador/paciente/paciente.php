@@ -31,13 +31,13 @@ $obj = new Paciente();
         $datos['cod_telefono'] = addslashes($_POST["hcod_telefono"]);
     }
     if (isset($_POST['telefono'])) {
-        $datos['telefono'] = substr(addslashes($_POST["telefono"]),5);
+        $datos['telefono'] = addslashes($_POST["telefono"]);
     }
     if (isset($_POST['hcod_celular'])) {
         $datos['cod_celular'] = addslashes($_POST["hcod_celular"]);
     }
     if (isset($_POST['celular'])) {
-        $datos['celular'] = substr(addslashes($_POST["celular"]),5);
+        $datos['celular'] = addslashes($_POST["celular"]);
     }
     if (isset($_POST['direccion'])) {
         $datos['direccion'] = addslashes($_POST["direccion"]);
@@ -59,10 +59,8 @@ $obj = new Paciente();
                 'nombre'        => $resultado['nombre'],
                 'apellido'      => $resultado['apellido'],
                 'cod_telefono'  => $resultado['cod_telefono'],
-                'codigot'       => $resultado['codigot'],
                 'telefono'      => $resultado['telefono'],
                 'cod_celular'   => $resultado['cod_celular'],
-                'codigoc'       => $resultado['codigoc'],
                 'celular'       => $resultado['celular'],
                 'direccion'     => $resultado['direccion'],
                 'cod_municipio' => $resultado['cod_municipio'],

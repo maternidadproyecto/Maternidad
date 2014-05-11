@@ -262,18 +262,18 @@ $(document).ready(function() {
             } else {
                 window.parent.apprise('&iquest;Desea Modificar los datos del registro?', {'verify': true, 'textYes': 'Aceptar', 'textNo': 'Cancelar'}, function(r) {
                     if (r) {
+                        $cedula_p.prop('disabled',false);
                         $.post(url, $frmpaciente.serialize(), function(data) {
+                            $cedula_p.prop('disabled',true);
                             var cod_msg = parseInt(data.error_codmensaje);
                             var mensaje = data.error_mensaje;
-                            var tipo = data.tipo_error;
-
                             window.parent.apprise(mensaje, {'textOk': 'Aceptar'});
 
                             var fila = $('#fila').val();
                             if (cod_msg == 22) {
 
                                 $("#tabla_paciente tbody tr:eq(" + fila + ")").find("td:eq(2)").text($fecha_nacimiento.val());
-                                $("#tabla_paciente tbody tr:eq(" + fila + ")").find("td:eq(3)").text($cod_telefono.val() + '' + $telefono.val());
+                                $("#tabla_paciente tbody tr:eq(" + fila + ")").find("td:eq(3)").text($telefono.val());
                                 limpiar();
                             }
                         }, 'json');
@@ -304,11 +304,10 @@ $(document).ready(function() {
         $text_nac.prop('disabled', true);
         $text_nac.val(nacionalidad + '-');
 
-        $('#hcedula_p').val(cedula_completa);
         $hnac.val(nacionalidad);
 
         $cedula_p.prop('disabled', true);
-        $cedula_p.val(cedula_p);
+        $cedula_p.val(cedula_completa);
 
         var datos_tele = telefono_completo.split('-');
        
@@ -327,8 +326,7 @@ $(document).ready(function() {
         $($fila).appendTo('#btnaccion');
 
         $('#accion').remove();
-
-        $.post(url, {cedula_p: cedula_p, accion: 'BuscarDatos'}, function(data) {
+        $.post(url, {cedula_p: cedula_completa, accion: 'BuscarDatos'}, function(data) {
     
             var codigo_municipio = parseInt(data.cod_municipio);
             var codigo_sector    = parseInt(data.cod_sector);
@@ -336,10 +334,8 @@ $(document).ready(function() {
             $nombre.val(data.nombre).prop('disabled',true);
             $apellido.val(data.apellido).prop('disabled',true);
             $hcod_telefono.val(data.cod_telefono);
-            $cod_telefono.val('0'+data.codigot+'-');
             $telefono.val(data.telefono);
             $hcod_celular.val(data.cod_celular);
-            $cod_celular.val('0'+data.codigoc+'-');
             $celular.val(data.celular);
             $municipio.select2('val',codigo_municipio);
             $direccion.val(data.direccion);

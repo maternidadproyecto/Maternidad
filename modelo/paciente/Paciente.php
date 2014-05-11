@@ -1,10 +1,10 @@
 <?php
 
-if (!defined('BASEPATH')){
+if (!defined('BASEPATH')) {
     exit("<div style='color:#FF0000;text-align:center;margin:0 auto'>Acceso Denegado</div>");
 }
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/Maternidad/FirePHP/fb.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/Maternidad/FirePHP/fb.php';
 
 $path   = dirname(__FILE__);
 $modulo = 'paciente';
@@ -29,16 +29,16 @@ class Paciente extends Seguridad
         try {
             $cedula_p         = $datos['cedula_p'];
             $fecha_nacimiento = $datos['fecha_nacimiento'];
-            $exi_ced = $this->recordExists("paciente", "cedula_p='" . $cedula_p . "'");
+            $exi_ced          = $this->recordExists("paciente", "cedula_p='" . $cedula_p . "'");
             if ($exi_ced === TRUE) {
-                 $this->_cod_msg   = 15;
-                $this->_mensaje   = '<span style="color:#FF0000">La C&eacute;dula se Encuentra Registrada en el Sistema</span>';
+                $this->_cod_msg = 15;
+                $this->_mensaje = '<span style="color:#FF0000">La C&eacute;dula se Encuentra Registrada en el Sistema</span>';
             } else {
 
-                 $fecha_nacimiento = $this->formateaBD($fecha_nacimiento);
-                 $fecha = array('fecha_nacimiento'=>$fecha_nacimiento);
-                 $datos = array_merge($datos,$fecha);
-                $insert = $this->insert('paciente', $datos);
+                $fecha_nacimiento = $this->formateaBD($fecha_nacimiento);
+                $fecha            = array('fecha_nacimiento' => $fecha_nacimiento);
+                $datos            = array_merge($datos, $fecha);
+                $insert           = $this->insert('paciente', $datos);
                 if ($insert === TRUE) {
                     $this->_cod_msg = 21;
                     $this->_mensaje = "El Registro ha sido Guardado Exitosamente";
@@ -55,14 +55,15 @@ class Paciente extends Seguridad
 
     public function getPaciente($datos)
     {
-        if(!isset($datos['sql'])){
-        $cedula_p = $datos['cedula_p'];
-        $data   = array(
-            'tabla'     => 'paciente AS p,codigo_telefono AS ct, sector AS s ',
-            'campos'    => 'p.nombre,p.apellido,p.cod_telefono,(SELECT ctt.codigo FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_telefono) AS codigot,p.telefono,p.cod_celular,(SELECT ctt.codigo FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_celular) AS codigoc,p.celular,p.direccion,(SELECT ss.cod_municipio FROM sector AS ss WHERE ss.cod_sector=p.cod_sector) AS cod_municipio,p.cod_sector ',
-            'condicion' => "p.cedula_p = $cedula_p AND p.cod_sector = s.cod_sector");
-        $result = $this->row($data);
-        }else{
+
+        if (!isset($datos['sql'])) {
+            $cedula_p = $datos['cedula_p'];
+            $data     = array(
+                'tabla'     => 'paciente AS p',
+                'campos'    => "p.nombre,p.apellido,p.cod_telefono,CONCAT('0',CONCAT_WS('-',(SELECT codigo FROM codigo_telefono  WHERE cod_telefono=p.cod_telefono),p.telefono)) AS telefono,p.cod_celular,CONCAT('0',CONCAT_WS('-',(SELECT codigo FROM codigo_telefono WHERE cod_telefono=p.cod_celular),p.celular)) AS celular,p.direccion,(SELECT cod_municipio FROM sector WHERE cod_sector=p.cod_sector) AS cod_municipio,p.cod_sector",
+                'condicion' => "p.cedula_p = $cedula_p");
+            $result   = $this->row($data);
+        } else {
             $result = $this->ex_query($datos['sql']);
         }
         return $result;
@@ -70,43 +71,35 @@ class Paciente extends Seguridad
 
     public function editPaciente($datos)
     {
-        $cedula_p         = $datos['cedula_p'];
-        $fecha_nacimiento = $datos['fecha_nacimiento'];
-        $telefono         = $datos['telefono'];
-        $celular          = $datos['celular'];
-        $direccion        = $datos['direccion'];
-        $cod_sector       = $datos['sector'];
-
         try {
-
             
-                $fecha_nacimiento = $this->formateaBD($fecha_nacimiento);
+                
+            $cedula_p         = $datos['cedula_p'];
+            $fecha_nacimiento = $datos['fecha_nacimiento'];
+            $telefono         = substr($datos['telefono'],5);
+            $celular          = substr($datos['celular'],5);  
+            
+            $fecha_nacimiento = $this->formateaBD($fecha_nacimiento);
+            $dat_new          = array('fecha_nacimiento' =>$fecha_nacimiento ,'telefono' => $telefono,'celular'=>$celular);
+            $datos            = array_merge($datos, $dat_new);
+            
+            unset($datos['cedula_p']);
+            unset($datos['nacionalidad']);
 
-                $data  = array(
-                    'fecha_nacimiento' => $fecha_nacimiento,
-                    'telefono'         => $telefono,
-                    'celular'          => $celular,
-                    'direccion'        => $direccion,
-                    'cod_sector'       => $cod_sector
-                );
-                $where = "cedula_p='$cedula_p'";
+            $where  = "cedula_p='$cedula_p'";
 
-                $update = (boolean) $this->update('paciente', $data, $where);
+            $update = (boolean) $this->update('paciente', $datos, $where);
 
-                if ($update === TRUE) {
-                    $this->_cod_msg   = 22;
-                    $this->_tipoerror = 'info';
-                    $this->_mensaje   = "El Registro ha sido  Modificado exitosamente";
-                    throw new Exception($this->_mensaje, $this->_cod_msg);
-                }else{
-                    $this->_tipoerror = 'error';
-                    $this->_mensaje   = 'Ocurrio un error comuniquese con informatica';
-                    $this->_cod_msg   = 16;
-                    throw new Exception($this->_mensaje, $this->_cod_msg);
-                }
-
+            if ($update === TRUE || $update > 0) {
+                $this->_cod_msg = 22;
+                $this->_mensaje = "El Registro ha sido  Modificado exitosamente";
+            } else {
+                $this->_cod_msg = 16;
+                $this->_mensaje = '<span style="color:#FF0000">Ocurrio un error comuniquese con informatica</span>';
+            }
+            throw new Exception($this->_mensaje, $this->_cod_msg);
         } catch (Exception $e) {
-            return array('tipo_error' => $this->_tipoerror,'error_codmensaje'=> $e->getCode(),'error_mensaje'=> $e->getMessage());
+            return array('error_codmensaje' => $e->getCode(), 'error_mensaje' => $e->getMessage());
         }
     }
 
@@ -127,11 +120,11 @@ class Paciente extends Seguridad
 
     public function getPacienteAll()
     {
-        $data  = array(
-                    'tabla' => 'paciente AS p ,codigo_telefono AS ct',
-                    'campos' => "CONCAT_WS('-',p.nacionalidad,p.cedula_p) AS cedula_p,CONCAT_WS(' ',p.nombre,p.apellido) AS nombres,DATE_FORMAT(p.fecha_nacimiento, '%d-%m-%Y') AS fecha,CONCAT('0',IF(p.telefono=0,(SELECT CONCAT_WS('-',ctt.codigo,p.celular) FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_celular),(SELECT CONCAT_WS('-',ctt.codigo,p.telefono) FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_telefono))) AS telefono",
-                    'condicion'=>'p.cod_telefono=ct.cod_telefono'
-                    );
+        $data   = array(
+            'tabla'     => 'paciente AS p ,codigo_telefono AS ct',
+            'campos'    => "CONCAT_WS('-',p.nacionalidad,p.cedula_p) AS cedula_p,CONCAT_WS(' ',p.nombre,p.apellido) AS nombres,DATE_FORMAT(p.fecha_nacimiento, '%d-%m-%Y') AS fecha,CONCAT('0',IF(p.telefono=0,(SELECT CONCAT_WS('-',ctt.codigo,p.celular) FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_celular),(SELECT CONCAT_WS('-',ctt.codigo,p.telefono) FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_telefono))) AS telefono",
+            'condicion' => 'p.cod_telefono=ct.cod_telefono'
+        );
         $result = $this->select($data, FALSE);
         return $result;
     }
@@ -139,8 +132,8 @@ class Paciente extends Seguridad
     public function getDatos($datos)
     {
         $cedula_p = $datos['cedula_p'];
-        $data   = array('tabla' => 'sector', 'campos' => "cod_sector,sector", "condicion" => "cod_municipio='" . $codigo_municipio . "'");
-        $result = $this->select($data, FALSE);
+        $data     = array('tabla' => 'sector', 'campos' => "cod_sector,sector", "condicion" => "cod_municipio='" . $codigo_municipio . "'");
+        $result   = $this->select($data, FALSE);
         return $result;
     }
 
@@ -154,12 +147,12 @@ class Paciente extends Seguridad
     public function getSector($datos)
     {
         $codigo_municipio = $datos['codigo_municipio'];
-        $data   = array(
-                            'tabla'     => 'sector',
-                            'campos'    => "cod_sector,sector",
-                            "condicion" => "cod_municipio='" . $codigo_municipio . "'"
-                        );
-        $result = $this->select($data, FALSE);
+        $data             = array(
+            'tabla'     => 'sector',
+            'campos'    => "cod_sector,sector",
+            "condicion" => "cod_municipio='" . $codigo_municipio . "'"
+        );
+        $result           = $this->select($data, FALSE);
         return $result;
     }
 
@@ -169,10 +162,12 @@ class Paciente extends Seguridad
         $result = $this->select($data, FALSE);
         return $result;
     }
-     public function getCodCelular()
-     {
+
+    public function getCodCelular()
+    {
         $data   = array('tabla' => 'codigo_telefono', 'campos' => "cod_telefono,codigo", "condicion" => "tipo=2");
         $result = $this->select($data, FALSE);
         return $result;
     }
+
 }
