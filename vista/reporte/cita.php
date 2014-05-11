@@ -85,12 +85,14 @@ $consul_result = $obj_cons->getConsultorioAll();
                             <td width="68">
                                 <img style="cursor: pointer" id="imgconsultorio" src="../../imagenes/img_info.png" width="15" height="15" alt="img_info"/>
                             </td>
-                            <td width="48" height="40" align="left">Medico:</td>
+                            <td width="100" height="40" align="left">Tipo de Paciente:</td>
                             <td width="247">
                                 <div id="div_fecha" style="margin-top: 10px" class="form-group">
-                                    <span class="form-group" style="margin-top: 10px">
-                                        <input  type="text" class="form-control input-sm" id="medico" name="medico"  maxlength="50" />
-                                    </span>
+                                    <select id="ps" name="ps" class="form-control input-sm select2">
+                                        <option value="0">Seleccione</option>
+                                        <option value="P">P</option>
+                                        <option value="S">S</option>
+                                    </select>
                                 </div>
                             </td>
                             <td width="50">

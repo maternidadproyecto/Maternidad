@@ -29,7 +29,7 @@ $(document).ready(function() {
     });
 
     $('#consultorio').select2();
-
+    $('#ps').select2();
     var ano = (new Date).getFullYear();
     ano = parseInt(ano);
     var enero = '01-01-' + ano;
