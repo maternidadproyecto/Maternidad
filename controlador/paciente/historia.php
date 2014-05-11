@@ -66,14 +66,14 @@ if (!isset($_POST['accion'])) {
             echo json_encode($resultado);
         break;
         case 'BuscarDatos':
-            $resultado = $obj->BuscarDatos1($data);
+            $resultado = $obj->BuscarDatos($data);
 
             if($resultado === FALSE){
                 $datos['error'] = 'error';
                 $datos['cod_error'] = 17;
                 $datos['mensaje'] = '<span style="color:#FF0000">El N&uacute;mero de Cédula no se encuentra registrado</span>';
             }else{
-                $datos = explode(';',$resultado);
+                $datos = $resultado;
             }
             
             echo json_encode($datos);

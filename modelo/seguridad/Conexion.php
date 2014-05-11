@@ -323,7 +323,7 @@ class Conexion
         }
     }
 
-    protected function numRows($table = NULL, $field = NULL, $conditions = '1')
+    public function numRows($table = NULL, $field = NULL, $conditions = '1')
     {
         if ($table === NULL || $field === NULL) {
             return FALSE;

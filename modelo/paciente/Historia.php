@@ -82,7 +82,7 @@ class Historia extends Paciente
         }
     }
 
-    public function BuscarDatos1($data)
+    public function BuscarDatos($data)
     {
 
         $cedula_p = $data['cedula_p'];
@@ -143,19 +143,20 @@ class Historia extends Paciente
                 $cita_asistida = 0;
                 $historia      = $result['historia'];
             }
-            $datos  = "";
-            $datos .= $historia.';';
-            $datos .= $result['nombre'] . ';';
-            $datos .= $result['apellido'] . ';';
-            $datos .= $result['fecha_nacimiento'] . ';';
-            $datos .= $result['edad'] . ';';
-            $datos .= $result['fur'] . ';';
-            $datos .= $result['fpp'] . ';';
-            $datos .= $result['lugar_control'] . ';';
-            $datos .= $result['fecha'].';';
-            $datos .= $result['datos'].';';
-            $datos .= $result['ultima_cita'].';';
-            $datos .= $result['existe_cita'];
+            $datos['historia'] = $historia;
+            $datos['nombre'] = $result['nombre'];
+            $datos['apellido'] = $result['apellido'];
+            $datos['fecha_nacimiento'] = $result['fecha_nacimiento'];
+            $datos['edad'] = $result['edad'];
+            $datos['fur'] = $result['fur'];
+            $datos['fpp'] = $result['fpp'];
+            $datos['lugar_control'] = $result['lugar_control'];
+            
+            $datos['fecha_ultima_cita'] = $result['fecha'];
+            $datos['datos'] = $result['datos'];
+            $datos['ultima_cita'] = $result['ultima_cita'];
+            $datos['existe_cita'] = $result['existe_cita'];
+           
         }
            
         return $datos;

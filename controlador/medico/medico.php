@@ -48,7 +48,7 @@ if (!isset($_POST['accion'])) {
             $resultado = $obj->getMedico($datos);
             $es_array = is_array($resultado) ? TRUE:FALSE;
             if ($es_array) {
-                echo json_encode(array('especialidad'=>$resultado['cod_especialidad'],'direccion'=>$resultado['direccion'],'cod_telefono'=>$resultado['cod_telefono']));
+                echo json_encode(array('nombre'=>$resultado['nombre'],'apellido'=>$resultado['apellido'], 'especialidad'=>$resultado['cod_especialidad'],'direccion'=>$resultado['direccion'],'cod_telefono'=>$resultado['cod_telefono']));
             }else{
                 echo 0;
             }

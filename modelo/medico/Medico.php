@@ -113,7 +113,7 @@ class Medico extends Especialidad
         $cedula_pm    = $datos['nacionalidad'].$datos['cedula_pm'];
         $data = array(
             "tabla"     => "personal_medico",
-            "campos"    => "direccion,cod_especialidad,cod_telefono",
+            "campos"    => "nombre,apellido,direccion,cod_especialidad,cod_telefono",
             "condicion" => "CONCAT_WS('-',nacionalidad,cedula_pm)='$cedula_pm'"
         );
         $result = $this->row($data, FALSE);

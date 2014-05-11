@@ -167,23 +167,26 @@ $(document).ready(function() {
                         $cedula_p.focus();
                     });
                 }else{
-                    $historia.val(resultado[0]);
-                    $nombre.val(resultado[1]);
-                    $apellido.val(resultado[2]);
-                    $fecha.val(resultado[3]);
-                    $edad.val(resultado[4]);
-                    $fur.val(resultado[5]);
-                    $fpp.val(resultado[6]);
-                    $lugar_control.val(resultado[7]);
-                    $cita.val(resultado[8]);
-                    if(resultado[15] == 0){
+                   
+                    $historia.val(resultado.historia);
+                    $nombre.val(resultado.nombre);
+                    $apellido.val(resultado.apellido);
+                    $fecha.val(resultado.fecha_nacimiento);
+                    $edad.val(resultado.edad);
+                    $fur.val(resultado.fur);
+                    $fpp.val(resultado.fpp);
+                    $lugar_control.val(resultado.lugar_control);
+                    $cita.val(resultado.fecha_ultima_cita);
+                    if(resultado.existe_cita == 0){
+                        var datos = resultado.datos.split(';');
                         $btnver.fadeIn('slow');
                         $btnaccion.prop('disabled',true);
-                        /*$tamano.val(resultado[9]).prop('disabled',true);
-                        $peso.val(resultado[10]).prop('disabled',true);
-                        $tension.val(resultado[11]).prop('disabled',true);
-                        $diagnostico.val(resultado[12]).prop('disabled',true);
-                        $observacion.val(resultado[13]).prop('disabled',true);*/
+                        $lugar_control.prop('disabled',true);
+                        $tamano.val(datos[0]).prop('disabled',true);
+                        $peso.val(datos[1]).prop('disabled',true);
+                        $tension.val(datos[2]).prop('disabled',true);
+                        $diagnostico.val(datos[3]).prop('disabled',true);
+                        $observacion.val(datos[4]).prop('disabled',true);
                     }
                     
                     /*if(resultado[15] > 0){
@@ -208,15 +211,14 @@ $(document).ready(function() {
         if (cedula_pm != '') {
             $.post(url_m, {cedula_pm: cedula_pm, accion: 'BuscarDatos'}, function(resultado) {
                 if(resultado != 0){
-                    var datos   = resultado.split(';');
-                    $('#nombre_m').val(datos[0]+' '+datos[1]);
+                    $('#nombre_m').val(resultado.nombre+' '+resultado.apellido);
                 }else{
                    window.parent.apprise('<span style="color:#FF0000">El N&uacute;mero de C\u00e9dula no se encuentra registrado</span>', {'textOk': 'Aceptar'}, function() {
                         $div_cedula_pm.addClass('has-error');
                         $cedula_pm.focus();
                     }); 
                 }
-            });
+            },'json');
         } else {
             window.parent.apprise('Debe ingresar el Num&eacute;ro de C&eacute;dula', {'textOk': 'Aceptar'}, function() {
                 $div_cedula_pm.addClass('has-error');

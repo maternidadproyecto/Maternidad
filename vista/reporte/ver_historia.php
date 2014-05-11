@@ -70,7 +70,7 @@ $pdf->SetMargins(10, 5, 10);
                     p.ps,
                     p.lugar_control
                 FROM paciente AS p
-                WHERE CONCAT_WS('-',p.nacionalidad,p.cedula_p) = '$cedula_p'";
+                WHERE CONCAT_WS('-',p.nacionalidad,p.cedula_p) = '$cedula_p';";
 
 $result_paci = $obj->getPaciente($data);
 
@@ -136,7 +136,7 @@ $data_con['campos']    = "DATE_FORMAT(co.fecha,'%d-%m-%Y') AS fecha,
                         co.tension,
                         co.observacion_medica";
 $data_con['condicion'] = "CONCAT_WS('-',co.nacionalidad,co.cedula_p) = '$cedula_p'";
-
+$data_con['ordenar']   = 'fecha DESC';
 $result_cons = $obj->select($data_con);
 
 

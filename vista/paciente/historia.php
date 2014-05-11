@@ -154,7 +154,14 @@ if (isset($_GET['modulo'])) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="6">Datos del M&eacute;dico</td>
+                                      <td height="44" colspan="6">&nbsp;</td>
+                                  </tr>
+                                    <tr>
+                                        <td height="17" colspan="6">
+                                    <field>
+                                        <legend style="font-size: 12px;">Datos del M&eacute;dico</legend>
+                                    </field>
+                                    </td>
                                     </tr>
                                     <tr>
                                         <td height="34"  align="left">C&eacute;dula</td>
