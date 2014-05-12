@@ -45,23 +45,24 @@ if (isset($_GET['desde']) && (!isset($_GET['hasta']))) {
 }
 if(isset($_GET['cons'])){
     $where .= " AND ci.num_consultorio=".$_GET['cons'];
+    $where_p .= " AND ci.fecha <= CURRENT_DATE";
 }
 if(isset($_GET['ps'])){
     $where_p .= " AND p.ps='".$_GET['ps']."'";
+    $where_p .= " AND ci.fecha <= CURRENT_DATE";
 }
 $sql = 
 $total = $obj_reporte->numRows('cita', 'fecha');
 if ($total > 0) {
-     $sql    = "SELECT
+    $sql    = "SELECT
                 co.consultorio,
                 co.num_consultorio,
                 ci.turno,
                 IF(ci.turno=1,'MAÑANA','TARDE') AS tipo_turno
-                FROM cita AS ci
+                FROM consulta AS ci
                 INNER JOIN consultorio AS co ON ci.num_consultorio=co.num_consultorio
                 WHERE $where
                 GROUP BY ci.num_consultorio,ci.turno";
-
     $result = $obj_reporte->ex_query($sql);
 
 // Cantidad maxima de registros a mostrar por pagina
@@ -76,7 +77,8 @@ if ($total > 0) {
     $w_cedula   = 30;
     $w_nombre   = 100;
     $w_tp       = 15;
-    $posicion_x = 45;
+    $w_asistio  = 20;
+    $posicion_x = 35;
     for ($i = 0; $i < count($result); $i++) {
         // titulo del listado
         $pdf->AddPage();
@@ -99,23 +101,25 @@ if ($total > 0) {
         $pdf->Cell($w_fecha, $row_height, 'Fecha', 1, 0, 'C', 1);
         $pdf->Cell($w_cedula, $row_height, 'Cédula', 1, 0, 'C', 1);
         $pdf->Cell($w_nombre, $row_height, 'Nombres', 1, 0, 'C', 1);
+        $pdf->Cell($w_asistio, $row_height, 'Asisitio', 1, 0, 'C', 1);
         $pdf->Cell($w_cedula, $row_height, 'Télefono', 1, 0, 'C', 1);
         $pdf->Cell($w_tp, $row_height, 'Tipo', 1, 1, 'C', 1);
         // buscar pacientes
         $num_cons = $result[$i]['num_consultorio'];
         $turno    = $result[$i]['turno'] ;
         
-       $sql      = "SELECT 
+        $sql      = "SELECT 
                     IF(ci.fecha=CURRENT_DATE,1,0) AS hoy,
                     IF(ci.fecha<CURRENT_DATE,1,0) AS pasada,
                     DATE_FORMAT(ci.fecha,'%d-%m-%Y') AS fecha, 
                     CONCAT_WS('-',p.nacionalidad,p.cedula_p) AS cedula_p,
                     CONCAT_WS(' ', p.nombre,p.apellido) AS nombres,
                     p.ps,
+                    IF(ci.asistencia=1,'SI','NO') AS asistencia,
                     CONCAT('0',(SELECT CONCAT_WS('-',ctt.codigo,p.celular) FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_telefono)) AS telefono
                  FROM paciente AS p 
-                 INNER JOIN cita AS ci ON p.cedula_p=ci.cedula_p 
-                 WHERE ci.num_consultorio = $num_cons AND turno = $turno. $where_p  ORDER BY p.ps,ci.fecha";
+                 INNER JOIN consulta AS ci ON p.cedula_p=ci.cedula_p 
+                 WHERE ci.num_consultorio = $num_cons AND turno = $turno $where_p  ORDER BY p.ps,ci.fecha";
         $result_p = $obj_reporte->ex_query($sql);
 
         $p = 0;
@@ -160,6 +164,7 @@ if ($total > 0) {
                 $pdf->Cell($w_fecha, $row_height, 'Fecha', 1, 0, 'C', 1);
                 $pdf->Cell($w_cedula, $row_height, 'Cédula', 1, 0, 'C', 1);
                 $pdf->Cell($w_nombre, $row_height, 'Nombres', 1, 0, 'C', 1);
+                $pdf->Cell($w_asistio, $row_height, 'Asisitio', 1, 0, 'C', 1);
                 $pdf->Cell($w_cedula, $row_height, 'Télefono', 1, 0, 'C', 1);
                 $pdf->Cell($w_tp, $row_height, 'Tipo', 1, 1, 'C', 1);
                 $h      = 1;
@@ -181,6 +186,7 @@ if ($total > 0) {
             $pdf->SetTextColor(0, 0, 0);
             $pdf->Cell($w_cedula, $row_height, $result_p[$j]['cedula_p'], 1, 0, 'C', 1);
             $pdf->Cell($w_nombre, $row_height, $result_p[$j]['nombres'], 1, 0, 'C', 1);
+            $pdf->Cell($w_asistio, $row_height, $result_p[$j]['asistencia'], 1, 0, 'C', 1);
             $pdf->Cell($w_cedula, $row_height, $result_p[$j]['telefono'], 1, 0, 'C', 1);
             if ($result_p[$j]['ps'] == 'P') {
                 $pdf->SetTextColor(255, 0, 0);
@@ -191,10 +197,10 @@ if ($total > 0) {
             $h++;
         }
         $pdf->Ln(2);
-        $pdf->SetX(242);
+        $pdf->SetX(252);
         $prim = '<span style="color:#FF0000;">P (' . $p . ')</span>';
         $pdf->writeHTML($prim, true, false, true, false, 'L');
-        $pdf->SetX(242);
+        $pdf->SetX(252);
         $suc  = '<span style="color:#000000;">S(' . $s . ')</span>';
         $pdf->writeHTML($suc, true, false, true, false, 'L');
         //$pdf->AddPage();

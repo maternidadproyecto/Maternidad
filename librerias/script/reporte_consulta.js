@@ -7,9 +7,9 @@ $(document).ready(function() {
     var enero = '01-01-' + ano;
     var fech_desde = '';
 
-    var startDate = new Date('01/01/' + ano);
+    var startDate   = new Date('01/01/' + ano);
     var FromEndDate = new Date();
-    var ToEndDate = new Date();
+    var ToEndDate   = new Date();
     ToEndDate.setDate(ToEndDate.getDate() + 90);
 
     $('#desde').datepicker({
@@ -18,7 +18,7 @@ $(document).ready(function() {
         weekStart: 1,
         daysOfWeekDisabled: "0,6",
         startDate: '01/01/' + ano,
-        endDate: ToEndDate,
+        endDate: '-1d',
         autoclose: true,
         clearBtn: true,
         //todayBtn: "linked",
@@ -50,7 +50,7 @@ $(document).ready(function() {
         weekStart: 1,
         daysOfWeekDisabled: "0,6",
         startDate: startDate,
-        endDate: ToEndDate,
+        endDate: '-1d',
         autoclose: true,
         clearBtn: true,
         //todayBtn: "linked",
@@ -138,7 +138,7 @@ $(document).ready(function() {
         if (ps != 0) {
             data += '&ps=' + ps;
         }
-        var url = 'reporte_cita.php?id=0' + data;
+        var url = 'reporte_consulta.php?id=0' + data;
         window.open(url);
     });
 });
