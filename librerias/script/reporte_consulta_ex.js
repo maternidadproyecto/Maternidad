@@ -35,16 +35,6 @@ $(document).ready(function() {
         }
     });
 
-    $('select#ps').change(function() {
-        var marcado = $("input:checkbox#hoy:checked").length;
-        if ($(this).val() != 0) {
-            $('#btnaccion').prop('disabled', false);
-        } else if ($(this).val() == 0 && marcado == 0 && $('#desde').val() == '' && $('#hasta').val() == '') {
-            $('#btnaccion').prop('disabled', true);
-        }
-    });
-    
-    
     $("ul#nacionalidad_m > li > span").click(function() {
         var nac = $(this).attr('id');
         if (nac != 'N') {

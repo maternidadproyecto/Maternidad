@@ -82,7 +82,9 @@ $pdf->Cell($w_observacion, $row_height, 'Observacion', 1, 1, 'L', 1);
 $cons      = $_GET['cons'];
 $fecha     = $_GET['fecha'];
 $cedula_pm = $_GET['cedula_pm'];
+
 $fecha = $obj_reporte->formateaBD($fecha);
+
 $sql = "SELECT 
             CONCAT_WS(' ',p.nombre,p.apellido)AS nombres,
             CONCAT_WS('-',c.nacionalidad,c.cedula_p) AS cedula_p, 
