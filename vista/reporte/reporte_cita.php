@@ -44,8 +44,7 @@ if (isset($_GET['desde']) && (!isset($_GET['hasta']))) {
 if(isset($_GET['cons'])){
     $where .= " AND ci.num_consultorio=".$_GET['cons'];
 }
-
-
+$sql = 
 $total = $obj_reporte->numRows('cita', 'fecha');
 if ($total > 0) {
      $sql    = "SELECT
@@ -98,19 +97,18 @@ if ($total > 0) {
         $pdf->Cell($w_cedula, $row_height, 'Télefono', 1, 0, 'C', 1);
         $pdf->Cell($w_tp, $row_height, 'Tipo', 1, 1, 'C', 1);
         // buscar pacientes
-
-        $sql      = "SELECT 
-                    IF(ci.fecha=CURRENT_DATE,1,0) AS hoy,
-                    IF(ci.fecha<CURRENT_DATE,1,0) AS pasada,
-                    DATE_FORMAT(ci.fecha,'%d-%m-%Y') AS fecha, 
+        $num_cons = $result[$i]['num_consultorio'];
+        $turno    = $result[$i]['turno'] ;
+        echo $sql      = "SELECT 
+                    IF(ci.fecha=CURRENT_DATE,1,0) AS hoy,IF(ci.fecha<CURRENT_DATE,1,0) AS pasada,DATE_FORMAT(ci.fecha,'%d-%m-%Y') AS fecha, 
                     CONCAT_WS('-',p.nacionalidad,p.cedula_p) AS cedula_p,
                     CONCAT_WS(' ', p.nombre,p.apellido) AS nombres,
                     p.ps,
                     CONCAT('0',(SELECT CONCAT_WS('-',ctt.codigo,p.celular) FROM codigo_telefono AS ctt WHERE ctt.cod_telefono=p.cod_telefono)) AS telefono
                  FROM paciente AS p 
                  INNER JOIN cita AS ci ON p.cedula_p=ci.cedula_p 
-                 WHERE ci.num_consultorio = " . $result[$i]['num_consultorio'] . " AND turno =" . $result[$i]['turno'] . " AND " . $where . " ORDER BY p.ps,ci.fecha";
-        $result_p = $obj_reporte->ex_query($sql);
+                 WHERE ci.num_consultorio = $num_cons AND turno = $turno   ORDER BY p.ps,ci.fecha";
+        exit;$result_p = $obj_reporte->ex_query($sql);
 
         $p = 0;
         $s = 0;

@@ -35,36 +35,6 @@ $(document).ready(function() {
     var enero = '01-01-' + ano;
     var fech_desde = '';
 
-    /* $('#desde').datepicker({
-     language: "es",
-     format: 'dd-mm-yyyy',
-     startDate: enero,
-     endDate: "+3m",
-     autoclose: true,
-     orientation: "top auto"
-     }).on('changeDate', function(ev) {
-     var sumarDias = parseInt(1);
-     fech_desde = $(this).val();
-     
-     var fech_ar = fech_desde.split("-");
-     var dia     = fech_ar[0];
-     var dia_nu  = parseInt(dia)+1;
-     var mes     = fech_ar[1]; 
-     var mes_nu  = parseInt(mes);
-     $('#h_hasta').val(dia_nu+'-'+mes_nu+'-'+ano);
-     $('#hasta').focus();
-     });
-     
-     $('#hasta').datepicker({
-     language: "es",
-     format: 'dd-mm-yyyy',
-     startDate: enero,
-     endDate: "+3m",
-     autoclose: true,
-     orientation: "top auto"
-     });*/
-
-
     var startDate = new Date('01/01/' + ano);
     var FromEndDate = new Date();
     var ToEndDate = new Date();
@@ -86,11 +56,13 @@ $(document).ready(function() {
         $('#l_hoy').addClass('disabled');
         $('#btnaccion').prop('disabled',false);
         $('#hasta').val('');
+        var consul = $('select#consultorio').find('option:selected').val();
+        var ps = $('select#ps').find('option:selected').val();
         if ($(this).val() != '') {
             startDate = new Date(selected.date.valueOf());
             startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())) + 1);
             $('#hasta').datepicker('setStartDate', startDate);
-        }else if($(this).val() == '' && $('#hasta').val() == ''){
+        }else if($(this).val() == '' && $('#hasta').val() == '' && consul == 0 && ps == 0){
             var FromEndDate = new Date();
             var ToEndDate = new Date();
             ToEndDate.setDate(ToEndDate.getDate() + 90);
@@ -115,6 +87,8 @@ $(document).ready(function() {
         $('#l_hoy').removeClass('success');
         $('#l_hoy').addClass('disabled');
         $('#btnaccion').prop('disabled',false);
+        var consul = $('select#consultorio').find('option:selected').val();
+        var ps = $('select#ps').find('option:selected').val();
         if ($(this).val() != '') {
             //FromEndDate = new Date(selected.date.valueOf());
             //FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf()))-1);
@@ -122,9 +96,9 @@ $(document).ready(function() {
             var ToEndDate = new Date();
             ToEndDate.setDate(ToEndDate.getDate() + 90);
             $('#desde').datepicker('setEndDate', ToEndDate);
-        }else if($(this).val() == '' && $('#desde').val() == ''){
+        }else if($(this).val() == '' && $('#desde').val() == '' && consul == 0 && ps == 0){
             var FromEndDate = new Date();
-            var ToEndDate = new Date();
+            var ToEndDate   = new Date();
             ToEndDate.setDate(ToEndDate.getDate() + 90);
             $('#desde').datepicker('setEndDate', ToEndDate);
             $('#l_hoy').removeClass('disabled');
@@ -161,27 +135,21 @@ $(document).ready(function() {
             $('#btnaccion').prop('disabled', true);
         }
     });
-    
-//    $("#desde").keyup(function() {
-//        var count = $(this).val().length;
-//        if(count == 0){
-//            $('#l_hoy').removeClass('disabled');
-//            $('#btnaccion').prop('disabled', true);
-//        }
-//    });
-//    
-//    $("#hasta").keyup(function() {
-//        var count = $(this).val().length;
-//        if(count == 0){
-//            $('#l_hoy').removeClass('disabled');
-//            $('#btnaccion').prop('disabled', true);
-//        }
-//    });
+
+    $('select#ps').change(function() {
+        var marcado = $("input:checkbox#hoy:checked").length;
+        if ($(this).val() != 0) {
+            $('#btnaccion').prop('disabled', false);
+        } else if ($(this).val() == 0 && marcado == 0 && $('#desde').val() == '' && $('#hasta').val() == '') {
+            $('#btnaccion').prop('disabled', true);
+        }
+    });
     
     $('#btnaccion').click(function() {
         var data = "";
-        var hoy = $('input:checkbox#hoy:checked').length;
-        var seleccionado = $('select#consultorio').find(':selected').val();
+        var hoy  = $('input:checkbox#hoy:checked').length;
+        var cons = $('select#consultorio').find(':selected').val();
+        var ps   = $('select#ps').find(':selected').val();
         if (hoy > 0) {
             var data = '&hoy=' + hoy;
         }
@@ -191,8 +159,11 @@ $(document).ready(function() {
         if($('#hasta').val() != ''){
             data += '&hasta='+$('input:text#hasta').val();
         }
-        if(seleccionado > 0){
-             data += '&cons='+seleccionado;
+        if(cons > 0){
+             data += '&cons='+cons;
+        }
+        if(ps != 0){
+             data += '&ps='+ps;
         }
         var url = 'reporte_cita.php?id=0' + data;
         window.open(url);
