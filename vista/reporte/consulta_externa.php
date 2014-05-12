@@ -93,20 +93,20 @@ $consul_result = $obj_cons->getConsultorioAll();
                             <td height="40" align="left">C&eacute;dula:</td>
                             <td>
                                 <div id="div_cedula_pm" class="input-group">
-                                                <div class="input-group-btn">
-                                                    <button style="font-size: 11px;" id="btn_nac_m" type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown">N <span class="caret"></span></button>
-                                                    <ul id="nacionalidad_m" class="dropdown-menu">
-                                                        <li><span id="N">N</span></li>
-                                                        <li><span id="V">V</span></li>
-                                                        <li><span id="E">E</span></li>
-                                                    </ul>
-                                                </div>
-                                                <input type="hidden" id="hnac_m" name="hnac_m" />
-                                                <input type="text" class="form-control input-sm" id="cedula_pm" name="cedula_pm"  value="" maxlength="9" />
-                                                <span class="input-group-btn ">
-                                                    <input style="font-size: 11px;" id="btnbuscar_m" type="button" class="btn btn-primary input-sm" value="Buscar"/>
-                                                </span>
-                                            </div>
+                                    <div class="input-group-btn">
+                                        <button style="font-size: 11px;" id="btn_nac_m" type="button" class="btn btn-default dropdown-toggle input-sm" data-toggle="dropdown">N <span class="caret"></span></button>
+                                        <ul id="nacionalidad_m" class="dropdown-menu">
+                                            <li><span id="N">N</span></li>
+                                            <li><span id="V">V</span></li>
+                                            <li><span id="E">E</span></li>
+                                        </ul>
+                                    </div>
+                                    <input type="hidden" id="hnac_m" name="hnac_m" />
+                                    <input type="text" class="form-control input-sm" id="cedula_pm" name="cedula_pm"  value="" maxlength="10" />
+                                    <span class="input-group-btn ">
+                                        <input style="font-size: 11px;" id="btnbuscar_m" type="button" class="btn btn-primary input-sm" value="Buscar"/>
+                                    </span>
+                                </div>
                             </td>
                             <td>
                                 <img style="cursor: pointer" id="imgconsultorio3" src="../../imagenes/img_info.png" width="15" height="15" alt="img_info"/>

@@ -4,9 +4,9 @@ define('BASEPATH', '');
 require_once './tcpdf/spa.php';
 require_once './tcpdf/MyClass.php';
 
-require_once '../../modelo/medico/Medico.php';
+require_once '../../modelo/paciente/Paciente.php';
 
-$obj_reporte = new Medico();
+$obj_reporte = new Paciente();
 
 $pdf = new MyClass("L", "mm", "A4", true, 'UTF-8', false);
 
