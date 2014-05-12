@@ -41,8 +41,8 @@ class Conexion
 
         $this->_conn= @new mysqli(self::$_server, self::$_user, self::$_password, $this->bd);
         if ((int) $this->_conn->connect_errno > 0) {
-            echo utf8_decode("<div style='color:#FF0000;text-align:center;margin:0 auto'>" . $this->_conn->connect_error . "</div>");
-            exit(utf8_decode("<div style='color:#FF0000;text-align:center;margin:0 auto'>Ocurrió un Error Comuniquese con informatica</div>"));
+            echo utf8_encode("<div style='color:#FF0000;text-align:center;margin:0 auto'>" . $this->_conn->connect_error . "</div>");
+            exit(utf8_decode("<div style='color:#FF0000;text-align:center;margin:0 auto'>Ocurri&oacute; un Error Comuniquese con informatica</div>"));
         } else {
             $this->_state_conn = TRUE;
             $this->_conn->set_charset('utf8');

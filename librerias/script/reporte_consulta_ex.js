@@ -12,93 +12,29 @@ $(document).ready(function() {
     var ToEndDate = new Date();
     ToEndDate.setDate(ToEndDate.getDate() + 90);
 
-    $('#desde').datepicker({
+    $('#fecha').datepicker({
         language: "es",
         format: 'dd/mm/yyyy',
         weekStart: 1,
         daysOfWeekDisabled: "0,6",
         startDate: '01/01/' + ano,
-        endDate: ToEndDate,
+        endDate: 'Today',
         autoclose: true,
         clearBtn: true,
-        //todayBtn: "linked",
+        todayBtn: "linked",
         orientation: "top auto"
     }).on('changeDate', function(selected, e) {
-        $('#l_hoy').removeClass('success');
-        $('#l_hoy').addClass('disabled');
         $('#btnaccion').prop('disabled', false);
-        $('#hasta').val('');
         var consul = $('select#consultorio').find('option:selected').val();
-        var ps = $('select#ps').find('option:selected').val();
-        if ($(this).val() != '') {
-            startDate = new Date(selected.date.valueOf());
-            startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())) + 1);
-            $('#hasta').datepicker('setStartDate', startDate);
-        } else if ($(this).val() == '' && $('#hasta').val() == '' && consul == 0 && ps == 0) {
-            var FromEndDate = new Date();
-            var ToEndDate = new Date();
-            ToEndDate.setDate(ToEndDate.getDate() + 90);
-            $('#desde').datepicker('setEndDate', ToEndDate);
-            $('#l_hoy').removeClass('disabled');
+        var cedula_pm    = $('#cedula_pm').find('option:selected').val();
+        if ($(this).val() == '' && consul == 0 && cedula_pm == "") {
             $('#btnaccion').prop('disabled', true);
         }
     });
 
-    $('#hasta').datepicker({
-        language: "es",
-        format: 'dd/mm/yyyy',
-        weekStart: 1,
-        daysOfWeekDisabled: "0,6",
-        startDate: startDate,
-        endDate: ToEndDate,
-        autoclose: true,
-        clearBtn: true,
-        //todayBtn: "linked",
-        orientation: "top auto"
-    }).on('changeDate', function(selected) {
-        $('#l_hoy').removeClass('success');
-        $('#l_hoy').addClass('disabled');
-        $('#btnaccion').prop('disabled', false);
-        var consul = $('select#consultorio').find('option:selected').val();
-        var ps = $('select#ps').find('option:selected').val();
-        if ($(this).val() != '') {
-            //FromEndDate = new Date(selected.date.valueOf());
-            //FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf()))-1);
-            var FromEndDate = new Date();
-            var ToEndDate = new Date();
-            ToEndDate.setDate(ToEndDate.getDate() + 90);
-            $('#desde').datepicker('setEndDate', ToEndDate);
-        } else if ($(this).val() == '' && $('#desde').val() == '' && consul == 0 && ps == 0) {
-            var FromEndDate = new Date();
-            var ToEndDate = new Date();
-            ToEndDate.setDate(ToEndDate.getDate() + 90);
-            $('#desde').datepicker('setEndDate', ToEndDate);
-            $('#l_hoy').removeClass('disabled');
-            $('#btnaccion').prop('disabled', true);
-        }
-    });
+   
 
-
-    $('input:checkbox#hoy').change(function() {
-        var este = $(this);
-        var padre = este.closest('label');
-        var cons = $('select#consultorio').find(':selected').val();
-        var ps = $('select#ps').find(':selected').val();
-        if (este.is(':checked')) {
-            $('#btnaccion').prop('disabled', false);
-            $('#desde').prop('disabled', true).val('');
-            $('#hasta').prop('disabled', true).val('');
-            padre.addClass('btn-success');
-        } else {
-            $('#desde').prop('disabled', false);
-            $('#hasta').prop('disabled', false);
-            padre.removeClass('btn-success');
-            if (cons == 0 && $('#desde').val() == '' && $('#hasta').val() == '' && ps == 0) {
-                $('#btnaccion').prop('disabled', true);
-            }
-
-        }
-    });
+    
 
     $('select#consultorio').change(function() {
         var marcado = $("input:checkbox#hoy:checked").length;
