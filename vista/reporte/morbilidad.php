@@ -108,7 +108,7 @@ $consul_result = $obj_cons->getConsultorioAll();
                             <td height="40" align="left">Nombres:</td>
                             <td>
                                 <div style="margin-top: 10px" class="form-group">
-                                    <input disabled="disabled" readonly type="text" class="form-control input-sm" id="nombrep" name="nombrep"  />
+                                    <input disabled="disabled" readonly type="text" class="form-control input-sm" id="nombre_p" name="nombre_p"  />
                                 </div>
                             </td>
                             <td>&nbsp;</td>

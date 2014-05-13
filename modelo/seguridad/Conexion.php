@@ -5,7 +5,7 @@ class Conexion
 
     private static $_server   = 'localhost';
     private static $_user     = 'root';
-    private static $_password = '';
+    private static $_password = '123456';
     protected $bd            = 'maternidad';
     private $_conn            = NULL;
     private $_state_conn      = FALSE;

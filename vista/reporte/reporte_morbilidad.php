@@ -47,14 +47,14 @@ $backup_group = "";
 $w_numero      = 8;
 $w_hora        = 10;
 $w_nombres     = 32;
-$w_edad        = 10;
+$w_edad        = 8;
 $w_direccion   = 40;
 $w_lugar       = 45;
-$w_tension     = 20;
-$w_fur         = 18;
-$w_fpp         = 18;
-$w_diagnostico = 40;
-$w_medico      = 28;
+$w_tension     = 15;
+$w_fur         = 16;
+$w_fpp         = 16;
+$w_diagnostico = 38;
+$w_medico      = 25;
 $w_conducta    = 30;
 
 $posicion_x = 100;
@@ -73,7 +73,7 @@ $pdf->Ln(15);
 $pdf->SetFillColor(39, 129, 213);
 // Titulos de la Cabecera
 $pdf->SetX($poscion_xr);
-$pdf->SetFont('FreeSerif', 'B', 10);
+$pdf->SetFont('FreeSerif', 'B', 9);
 $pdf->Cell($w_numero, $row_height, 'Nro', 1, 0, 'C', 1);
 $pdf->Cell($w_hora, $row_height, 'Hora', 1, 0, 'C', 1);
 $pdf->Cell($w_nombres, $row_height, 'Nombres y Apellidos', 1, 0, 'L', 1);
@@ -166,7 +166,7 @@ for ($i = 0; $i < count($result); $i++) {
       } */
 
     // crear los registros a mostrar
-    $pdf->SetFont('FreeSerif', '', 10);
+    $pdf->SetFont('FreeSerif', '', 9);
     $pdf->SetX($poscion_xr);
     $pdf->Cell($w_numero, $row_height, $i, 1, 0, 'C', 1);
     $pdf->Cell($w_hora, $row_height,$i , 1, 0, 'L', 1);
